@@ -24,7 +24,7 @@ export const Form = () => {
   const handleSubmit = () => {
     setAll([...all, formData]);
     const { loading, error, data } = useAsync(
-      "http://localhost:3001",
+      "http://localhost:3001/users",
       formData
     );
     if (error) {
