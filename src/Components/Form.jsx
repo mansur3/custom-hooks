@@ -13,15 +13,16 @@ import { useAsync } from "../utils/useAsync";
 export const Form = () => {
   const { failureNotification, successNotification } = useNotification();
   const [formData, setformData] = useState({});
+  const [all, setAll] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setformData({ ...formData, [name]: value });
   };
-  console.log(formData);
 
   const handleSubmit = () => {
+    setAll([...all, formData]);
     const { loading, error, data } = useAsync(
       "http://localhost:3001",
       formData
@@ -34,7 +35,7 @@ export const Form = () => {
   };
 
   return (
-    <div>
+    <div style={{ width: "400px", margin: "auto" }}>
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Box
@@ -84,10 +85,23 @@ export const Form = () => {
           </Box>
         </CardContent>
 
-        <Button onSubmit={handleSubmit} size="large">
+        <Button onClick={handleSubmit} size="large">
           submit
         </Button>
       </Card>
+
+      <div>
+        {all.map((e, i) => (
+          <div key={i}>
+            <h2>
+              {" "}
+              name : {e.first_name} {e.last_name}
+            </h2>
+            <p>email : {e.email}</p>
+            <p>phone : {e.number} </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
